@@ -45,7 +45,7 @@ export default async function handler(req, res) {
       subject,
       replyTo: email,
       html: `
-        <div style="font-family:Segoe UI,sans-serif;background:#f4f6f8;padding:20px;">
+        <div style="font-family:Poppins,Arial,sans-serif;background:#f4f6f8;padding:20px;">
           <div style="background:#fff;border-radius:8px;padding:30px;max-width:600px;margin:auto;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
             <h2 style="color:#333;">📬 New Contact Form Submission</h2>
             <p><strong>Name:</strong> ${name}</p>
@@ -99,7 +99,7 @@ export default async function handler(req, res) {
               </p>
               <hr style="margin:2em 0;border:none;height:2px;background:linear-gradient(90deg,#1976d2,#26c6da);">
               <p>Best regards,</p>
-              <p style="font-family:'Dancing Script',cursive;font-size:1.8em;color:#1976d2;margin:0;">The VSaaS Team</p>
+              <p style="font-family:Poppins,Arial,sans-serif;font-size:1.8em;color:#1976d2;margin:0;">The VSaaS Team</p>
               <p><em>Customer Support</em><br>VSaaS Technologies</p>
             </div>
             <div style="background:#f1f3f6;text-align:center;padding:1em;font-size:0.9em;color:#777;">
