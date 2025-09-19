@@ -83,7 +83,7 @@ export default async function handler(req, res) {
               One of our representatives will get back to you within <strong>2 business days</strong>.</p>
               <div style="margin:25px 0;padding:15px;background:#f9fbfc;border-left:4px solid #1976d2;border-radius:6px;">
                 <h3 style="margin-top:0;color:#1976d2;">Why Choose VSaaS Technologies?</h3>
-                <ul style="padding-left:20px;">
+                <ul style="padding-left:20px;list-style: none;">
                   <li>✔ Cutting-edge Development solutions</li>
                   <li>✔ Proven reliability and scalability</li>
                   <li>✔ All-round IT and business services</li>
