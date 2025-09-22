@@ -108,9 +108,9 @@ export default async function handler(req, res) {
 
               <hr style="margin:2em 0;border:none;height:2px;background:#1976d2;">
               <p>Best regards,</p>
-              <p style="font-size:1.4em;color:#1976d2;margin:0;">VSaaS Technologies Private Limited</p>
-              <p>info@vsaastechnologies.com <br>+91 7893024466</p>
-              <p><em>Customer Support</em><br>VSaaS Technologies</p>
+              <p style="font-size:1.4em;color:#1976d2;margin:0;">VSaaS Technologies Private Limited<br>
+              <p>info@vsaastechnologies.com <br>+91 7893024466<br>
+              VSaaS Technologies</p>
             </div>
 
             <!-- Footer -->
