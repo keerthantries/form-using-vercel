@@ -1,129 +1,137 @@
 import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*'); // or use 'http://127.0.0.1:5501' for stricter control
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+    // 1. CORS Configuration (Mandatory for frontend/serverless communication)
+    res.setHeader('Access-Control-Allow-Origin', '*'); 
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  const { name, email, phone, message } = req.body || {};
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
 
-  if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Name, email, and message are required' });
-  }
+    // 2. Destructure and Validate Input
+    const { name, email, phone, message } = req.body || {};
 
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !process.env.TO_EMAIL) {
-    console.error('Missing SMTP credentials');
-    return res.status(500).json({ error: 'Email configuration error' });
-  }
+    if (!name || !email || !message) {
+        return res.status(400).json({ error: 'Name, email, and message are required' });
+    }
 
-  try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    // Check for required environment variables
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !process.env.TO_EMAIL) {
+        console.error('Missing SMTP credentials or TO_EMAIL');
+        return res.status(500).json({ error: 'Email configuration error on server' });
+    }
 
-    const subject = `Contact from ${name}`;
-    const timestamp = new Date().toLocaleString('en-IN', {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-      timeZone: 'Asia/Kolkata'
-    });
+    try {
+        // 3. Configure the Transporter
+        const transporter = nodemailer.createTransport({
+            service: 'gmail', // Change to your preferred service/host if not using Gmail
+            auth: {
+                user: process.env.SMTP_USER, // Sender Email (e.g., info@vidhyapat.com)
+                pass: process.env.SMTP_PASS, // App Password or equivalent
+            },
+        });
 
-    // Admin Notification
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: process.env.TO_EMAIL,
-      subject,
-      replyTo: email,
-      html: `
-        <div style="font-family:Poppins,Arial,sans-serif;background:#f4f6f8;padding:20px;">
-          <div style="background:#fff;border-radius:8px;padding:30px;max-width:600px;margin:auto;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
-            <h2 style="color:#333;">📬 New Contact Form Submission</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
-            <p><strong>Subject:</strong> ${subject}</p>
-            <p><strong>Message:</strong><br>${message}</p>
-            <hr>
-            <p style="font-size:0.9em;color:#888;">Submitted on ${timestamp}<br>— VSaaS Technologies Team</p>
-          </div>
-        </div>
-      `
-    });
+        const subject = `New Inquiry from ${name}`;
+        // Generate a timestamp for the admin notification
+        const timestamp = new Date().toLocaleString('en-IN', {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+            timeZone: 'Asia/Kolkata'
+        });
 
-    // Auto-reply to user
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: email,
-      subject: `We’ve Received Your Message!`,
-      html: `
-        <div style="width:100%;background:#f5f5f5;padding:0;margin:0;">
-          <div style="max-width:650px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;
-                      font-family:Poppins,Arial,sans-serif;font-size:16px;line-height:1.6;color:#333;">
-            
-            <!-- Header with solid background color -->
-            <div style="background-color:#0bb9db;
-                        color:#fff;text-align:center;padding:1.8em;">
-              <img src="https://i.ibb.co/tpP9hVh1/logo-removebg-preview.png" alt="VSaaS Logo"
-                   style="height:50px;margin-bottom:10px;">
-              <h4 style="margin:0;font-weight:400;font-size:1.1em;">Thank You for Reaching Out</h4>
-              <h1 style="margin:0.3em 0 0;font-weight:600;font-size:1.8em;">
-                We’ve <span style="color:#ffeb3b;">Received</span> Your Message!
-              </h1>
-            </div>
+        // 4. Admin Notification Email (Simple, informational template for your team)
+        await transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to: process.env.TO_EMAIL, // Your designated internal inbox
+            subject: `[Vidhyapat] ${subject}`,
+            replyTo: email,
+            html: `
+                <div style="font-family:'Poppins', Arial, sans-serif;background:#f4f6f8;padding:20px;">
+                    <div style="background:#fff;border-radius:8px;padding:30px;max-width:600px;margin:auto;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+                        <h2 style="color:#5B1F9D;border-bottom: 2px solid #ddd;padding-bottom:10px;">📬 Vidhyapat New Inquiry</h2>
+                        <p><strong>Name:</strong> ${name}</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                        <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+                        <p><strong>Message:</strong><br>${message}</p>
+                        <hr style="margin-top: 20px;">
+                        <p style="font-size:0.9em;color:#888;">Submitted on ${timestamp} (Asia/Kolkata)</p>
+                    </div>
+                </div>
+            `
+        });
 
-            <!-- Body -->
-            <div style="padding:1.5em;">
-              <p>Hi ${name},</p>
-              <p>Thank you for contacting <strong>VSaaS Technologies</strong>.<br>
-              We’ve successfully received your inquiry and our team is reviewing your request.<br>
-              One of our representatives will get back to you within <strong>2 business days</strong>.</p>
+        // 5. User Auto-reply Email (Styled template for the client)
+        await transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to: email, // Reply to the user's email address
+            subject: `We’ve Received Your Inquiry, ${name}!`,
+            html: `
+                <div style="width:100%;background:#f5f5f5;padding:0;margin:0;">
+                    <div style="max-width:650px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;
+                    font-family:'Poppins', 'Helvetica Neue', Arial, sans-serif;font-size:16px;line-height:1.7;color:#333;box-shadow: 0 6px 15px rgba(0,0,0,0.15);">
 
-              <div style="margin:25px 0;padding:15px;background:#f9fbfc;border-left:4px solid #1976d2;border-radius:6px;">
-                <h3 style="margin-top:0;color:#1976d2;">Why Choose VSaaS Technologies?</h3>
-                <ul style="padding-left:20px;margin:0;list-style:none;">
-                  <li>✔ Cutting-edge Development solutions</li>
-                  <li>✔ Proven reliability and scalability</li>
-                  <li>✔ All-round IT and business services</li>
-                  <li>✔ Dedicated support and fast response</li>
-                </ul>
-              </div>
+                        <!-- Header with Vidhyapat Branding (Dark Indigo: #5B1F9D) -->
+                        <div style="background-color:#5B1F9D; /* Dark Indigo background */
+                                    color:#ffffff; /* White text color */
+                                    text-align:center;padding:2em;">
+                            <!-- Logo Image (Using your specified URL) -->
+                            <img src="https://vidhyapat-learning.web.app/assets/images/logo/logo%20black.png" alt="Vidhyapat Logo"
+                                        style="height:50px;margin-bottom:10px; border-radius: 4px; display: block; margin-left: auto; margin-right: auto;">
+                            <h1 style="margin:0.3em 0 0;font-weight:700;font-size:2em; color:#ffffff;">
+                                Inquiry <span style="color:#FFD700;">Confirmed!</span>
+                            </h1>
+                        </div>
 
-              <p style="text-align:center;">
-                <a href="https://vsaastechnologies.com" target="_blank"
-                   style="background:#1976d2;color:#fff;text-decoration:none;
-                          padding:12px 24px;border-radius:24px;font-weight:bold;display:inline-block;">
-                  Visit Our Website
-                </a>
-              </p>
+                        <!-- Body -->
+                        <div style="padding:1.8em 2.5em;">
+                            <p style="margin-top:0;">Hello ${name},</p>
+                            <p>Thank you for contacting Vidhyapat Training.<br>
+                            We have successfully received your message and our dedicated training counselor team is reviewing your request.<br>
+                            We aim to connect with you within <span style="font-weight: bold; color: #5B1F9D;">2 business days</span>.</p>
 
-              <hr style="margin:2em 0;border:none;height:2px;background:#1976d2;">
-              <p>Best regards,</p>
-              <p style="font-size:1.4em;color:#063b80;margin:0;">VSaaS Technologies Private Limited<br>
-              info@vsaastechnologies.com <br>+91 7893024466</p>
-            </div>
+                            <!-- Inquiry Details -->
+                            <div style="margin:25px 0;padding:18px;background:#fcfdff;border-left:4px solid #5B1F9D;border-radius:6px;">
+                                <h3 style="margin-top:0;color:#5B1F9D;font-size:1.15em;font-weight:600;">Your Inquiry Details:</h3>
+                                <p style="margin:0;font-size:0.95em;">Submitted Message: 
+                                <span style="font-style:italic;display:block;margin-top:5px;color:#555;">"${message.substring(0, 100)}..."</span></p>
+                            </div>
 
-            <!-- Footer -->
-            <div style="background:#f1f3f6;text-align:center;padding:1em;font-size:0.9em;color:#777;">
-              &copy; 2025 VSaaS Technologies. All rights reserved.
-            </div>
-          </div>
-        </div>
-      `
-    });
+                            <!-- CTA Button (Primary Color: #5B1F9D) -->
+                            <p style="text-align:center;margin-top:40px;margin-bottom:40px;">
+                                <a href="https://vidhyapat.com" target="_blank"
+                                    style="background:#5B1F9D;color:#fff;text-decoration:none;
+                                            padding:14px 28px;border-radius:30px;font-weight:bold;display:inline-block;border: 1px solid #5B1F9D; text-decoration: none; font-size: 1.05em;">
+                                    Explore Our Training
+                                </a>
+                            </p>
 
-    res.status(200).json({ ok: true });
-  } catch (err) {
-    console.error('Error sending email:', err);
-    res.status(500).json({ error: 'Failed to send email' });
-  }
+                            <hr style="margin:2em 0;border:none;height:1px;background:#ddd;">
+                            <p>Best regards,</p>
+                            <p style="font-size:1.4em;color:#5B1F9D;margin:0;font-weight:700;">The Vidhyapat Team</p>
+                            <!-- CONTACT INFO -->
+                            <p style="font-size:0.95em;color:#555;margin:0;">teamvidhyapat@gmail.com | +91 7893024466</p>
+                        </div>
+
+                        <!-- Footer -->
+                        <div style="background:#e8e8f0;text-align:center;padding:1.2em;font-size:0.85em;color:#666;">
+                            &copy; 2025 Vidhyapat. All rights reserved.
+                        </div>
+                    </div>
+                </div>
+            `
+        });
+
+        // 6. Success Response
+        res.status(200).json({ ok: true, status: 'success', message: 'Emails sent successfully.' });
+    } catch (err) {
+        console.error('Error sending email:', err);
+        // 7. Error Response
+        res.status(500).json({ error: 'Failed to send email', status: 'error' });
+    }
 }
