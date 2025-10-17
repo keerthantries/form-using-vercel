@@ -73,7 +73,7 @@ export default async function handler(req, res) {
             <!-- Header with solid background color -->
             <div style="background-color:#0bb9db;
                         color:#fff;text-align:center;padding:1.8em;">
-              <img src="https://i.ibb.co/tpP9hVh1/logo-removebg-preview.png" alt="VSaaS Logo"
+              <img src="https://vsaastechnologies.com/assets/img/logo-black.png" alt="VSaaS Logo"
                    style="height:50px;margin-bottom:10px;">
               <h4 style="margin:0;font-weight:400;font-size:1.1em;">Thank You for Reaching Out</h4>
               <h1 style="margin:0.3em 0 0;font-weight:600;font-size:1.8em;">
