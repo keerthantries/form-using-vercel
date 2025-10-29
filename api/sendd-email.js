@@ -115,7 +115,7 @@ export default async function handler(req, res) {
                             <p>Best regards,</p>
                             <p style="font-size:1.4em;color:#5B1F9D;margin:0;font-weight:700;">The Vidhyapat Team</p>
                             <!-- CONTACT INFO -->
-                            <p style="font-size:0.95em;color:#555;margin:0;">teamvidhyapat@gmail.com | +91 7893024466</p>
+                            <p style="font-size:0.95em;color:#555;margin:0;">teamvidhyapat@gmail.com | +91 7893026644</p>
                         </div>
 
                         <!-- Footer -->
