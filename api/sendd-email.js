@@ -29,8 +29,8 @@ export default async function handler(req, res) {
  
     // BHUSETHU.COM BRANDING VARIABLES (You must update these)
     const BRAND_NAME = 'Bhusethu';
-    const BRAND_EMAIL = 'info@bhusethu.com'; // Placeholder
-    const BRAND_PHONE = '+91 9876543210'; // Placeholder
+    const BRAND_EMAIL = 'support@bhusethu.com'; // Placeholder
+    const BRAND_PHONE = '+91 7893024466'; // Placeholder
     const BRAND_WEBSITE = 'https://bhusethu.com';
     const PRIMARY_COLOR = '#0056B3'; // Placeholder: A deep blue (CHANGE THIS)
     const ACCENT_COLOR = '#FFC107'; // Placeholder: An amber/gold (CHANGE THIS)
