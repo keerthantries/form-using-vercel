@@ -20,7 +20,23 @@ export default async function handler(req, res) {
     if (!name || !email || !message) {
         return res.status(400).json({ error: 'Name, email, and message are required' });
     }
+// 2.5. CAPTCHA Verification
+const token = req.body.token;
+if (!token) {
+    return res.status(400).json({ error: 'Missing CAPTCHA token' });
+}
 
+const verifyResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `secret=${process.env.TURNSTILE_SECRET_KEY}&response=${token}`
+});
+
+const verification = await verifyResponse.json();
+if (!verification.success) {
+    return res.status(403).json({ error: 'CAPTCHA verification failed' });
+}
+ 
     // Check for required environment variables
     if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !process.env.TO_EMAIL) {
         console.error('Missing SMTP credentials or TO_EMAIL');
