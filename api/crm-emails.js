@@ -4,31 +4,34 @@ import nodemailer from 'nodemailer';
 // BRAND CONFIG
 // ─────────────────────────────────────────
 const BRAND = {
-  name:    'Vidhyapat',
-  tagline: 'Empowering Careers Through Technology',
-  website: 'https://vidhyapat.com',
-  email:   'support@vidhyapat.com',
-  phone:   '+91 7893026644',
-  logo:    'https://res.cloudinary.com/doqbjnliq/image/upload/v1768821884/logo_oe6pjv.png',
-  bank: {
-    name:  'Vidhyapat Technologies Pvt Ltd',
-    acNo:  '81795315194',
-    ifsc:  'IDFB0080218'
-  },
-  colors: {
-    primary:     '#1976d2',
-    primaryDark: '#1565c0',
-    success:     '#2e7d32',
-    warning:     '#e65100',
-    danger:      '#c62828',
-    purple:      '#7c3aed',
-    orange:      '#f97316',
-    gray:        '#4b5563',
-    lightBg:     '#f0f7ff',
-    border:      '#dbeafe',
-    text:        '#1a1a2e',
-    muted:       '#6b7280'
-  }
+    name: 'Vidhyapat',
+    tagline: 'Empowering Careers Through Technology',
+    website: 'https://vidhyapat.com',
+    email: 'support@vidhyapat.com',
+    phone: '+91 7893026644',
+    indPhone: '+91 8008919181',
+    usaPhone: '+1 213 223 8844',
+    canPhone: '+1 (289) 991-1346',
+    logo: 'https://res.cloudinary.com/doqbjnliq/image/upload/v1768821884/logo_oe6pjv.png',
+    bank: {
+        name: 'Vidhyapat Technologies Pvt Ltd',
+        acNo: '81795315194',
+        ifsc: 'IDFB0080218'
+    },
+    colors: {
+        primary: '#1976d2',
+        primaryDark: '#1565c0',
+        success: '#2e7d32',
+        warning: '#e65100',
+        danger: '#c62828',
+        purple: '#7c3aed',
+        orange: '#f97316',
+        gray: '#4b5563',
+        lightBg: '#f0f7ff',
+        border: '#dbeafe',
+        text: '#1a1a2e',
+        muted: '#6b7280'
+    }
 };
 
 // ─────────────────────────────────────────
@@ -97,7 +100,7 @@ const wrap = (content, accentColor = BRAND.colors.primary) => `
       <div class="footer-links">
         <a href="${BRAND.website}"><i class="bi bi-globe"></i> vidhyapat.com</a>
         <a href="mailto:${BRAND.email}"><i class="bi bi-envelope"></i> ${BRAND.email}</a>
-        <a href="tel:${BRAND.phone.replace(/\s/g,'')}"><i class="bi bi-telephone"></i> ${BRAND.phone}</a>
+        <a href="tel:${BRAND.phone.replace(/\s/g, '')}"><i class="bi bi-telephone"></i> ${BRAND.phone}</a>
       </div>
     </div>
   </div>
@@ -112,7 +115,10 @@ const getSignature = () => `
     <div class="org" style="margin-top:6px;">
       ${BRAND.website}<br/>
       ${BRAND.email}<br/>
-      ${BRAND.phone}
+      ${BRAND.usaPhone ? `USA: ${BRAND.usaPhone}<br/>` : ''}
+      ${BRAND.canPhone ? `Canada: ${BRAND.canPhone}<br/>` : ''}
+      ${BRAND.phone}<br/>
+      ${BRAND.indPhone ? `India: ${BRAND.indPhone}<br/>` : ''}
     </div>
   </div>
 `;
@@ -120,9 +126,9 @@ const getSignature = () => `
 // 1. NEW LEAD
 // ─────────────────────────────────────────
 function newLeadEmail({ name, course }) {
-  return {
-    subject: `Thank You for Reaching Out – ${BRAND.name}`,
-    html: wrap(`
+    return {
+        subject: `Thank You for Reaching Out – ${BRAND.name}`,
+        html: wrap(`
       <p class="greeting">Hi <strong>${name}</strong>,</p>
 
       <p>Thank you for reaching out to <strong>${BRAND.name}</strong>.</p>
@@ -164,7 +170,7 @@ function newLeadEmail({ name, course }) {
 
       ${getSignature()}
     `, BRAND.colors.primary)
-  };
+    };
 }
 
 // ─────────────────────────────────────────
@@ -174,9 +180,9 @@ function newLeadEmail({ name, course }) {
 // 2. INTERESTED (Modified to use Dynamic Bank Settings)
 // ─────────────────────────────────────────
 function interestedEmail({ name, course, price, qrCodeUrl, bankName, bankAcNo, bankIfsc }) {
-  return {
-    subject: `${BRAND.name} – Course Enrollment Details for ${course}`,
-    html: wrap(`
+    return {
+        subject: `${BRAND.name} – Course Enrollment Details for ${course}`,
+        html: wrap(`
       <p class="greeting">Dear <strong>${name}</strong>,</p>
 
       <p>Thank you for showing interest in <strong>${course}</strong> at <strong>${BRAND.name}</strong>.</p>
@@ -205,7 +211,7 @@ function interestedEmail({ name, course, price, qrCodeUrl, bankName, bankAcNo, b
       <p><strong>Payment QR Code:</strong></p>
 
      ${qrCodeUrl
-  ? `<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin: 18px 0;">
+                ? `<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin: 18px 0;">
        <tr>
          <td align="center">
            <div style="border: 2px solid #e5e7eb; border-radius: 12px; padding: 10px; display: inline-block; background: #ffffff;">
@@ -214,8 +220,8 @@ function interestedEmail({ name, course, price, qrCodeUrl, bankName, bankAcNo, b
          </td>
        </tr>
      </table>`
-  : `<p style="color:${BRAND.colors.muted};text-align:center;">QR code will be shared shortly.</p>`
-}
+                : `<p style="color:${BRAND.colors.muted};text-align:center;">QR code will be shared shortly.</p>`
+            }
 
       <div class="highlight-box" style="background:#f9fafb;border:1px solid #e5e7eb;">
         <p><strong>Bank Details :</strong></p>
@@ -247,7 +253,7 @@ function interestedEmail({ name, course, price, qrCodeUrl, bankName, bankAcNo, b
 
       ${getSignature()}
     `, BRAND.colors.warning)
-  };
+    };
 }
 
 // ─────────────────────────────────────────
@@ -257,9 +263,9 @@ function interestedEmail({ name, course, price, qrCodeUrl, bankName, bankAcNo, b
 // 3. PAYMENT PENDING (Modified to use Dynamic Bank Settings)
 // ─────────────────────────────────────────
 function paymentPendingEmail({ name, course, price, qrCodeUrl, bankName, bankAcNo, bankIfsc }) {
-  return {
-    subject: `${BRAND.name} – Your Payment for ${course} is Pending`,
-    html: wrap(`
+    return {
+        subject: `${BRAND.name} – Your Payment for ${course} is Pending`,
+        html: wrap(`
       <p class="greeting">Dear <strong>${name}</strong>,</p>
       <p>We noticed that your payment for the <strong>${course}</strong> course is still pending. Your seat is currently reserved — please complete the payment to confirm your spot.</p>
 
@@ -284,7 +290,7 @@ function paymentPendingEmail({ name, course, price, qrCodeUrl, bankName, bankAcN
           Payment QR Code
         </h3>
         ${qrCodeUrl
-  ? `<table width="100%" border="0" cellspacing="0" cellpadding="0">
+                ? `<table width="100%" border="0" cellspacing="0" cellpadding="0">
        <tr>
          <td align="center">
            <div style="border: 2px solid #e5e7eb; border-radius: 12px; padding: 10px; display: inline-block; background: #ffffff;">
@@ -294,8 +300,8 @@ function paymentPendingEmail({ name, course, price, qrCodeUrl, bankName, bankAcN
          </td>
        </tr>
      </table>`
-  : `<p style="text-align:center;color:${BRAND.colors.muted};">QR not available</p>`
-}
+                : `<p style="text-align:center;color:${BRAND.colors.muted};">QR not available</p>`
+            }
 
         <div style="font-size:13px;color:${BRAND.colors.text};line-height:2.2;margin-top:16px;padding:14px;background:#f9fafb;border-radius:8px;">
           <div><strong>A/C Name :</strong> ${bankName}</div>
@@ -318,16 +324,16 @@ function paymentPendingEmail({ name, course, price, qrCodeUrl, bankName, bankAcN
 
       ${getSignature()}
     `, BRAND.colors.orange)
-  };
+    };
 }
 
 // ─────────────────────────────────────────
 // 4. ENROLLED (After Enrollment)
 // ─────────────────────────────────────────
 function enrolledEmail({ name, course, lmsUrl, username, tempPassword, startDate }) {
-  return {
-    subject: `Congratulations! Your Enrollment for ${course} is Confirmed – ${BRAND.name}`,
-    html: wrap(`
+    return {
+        subject: `Congratulations! Your Enrollment for ${course} is Confirmed – ${BRAND.name}`,
+        html: wrap(`
       <p class="greeting">Dear <strong>${name}</strong>,</p>
       <p style="font-size:18px;font-weight:700;color:${BRAND.colors.success};margin:10px 0;">Congratulations! 🎉</p>
       <p>Your enrollment for <strong>${course}</strong> has been successfully confirmed. You can now access the <strong>${BRAND.name} Learning Management System (LMS)</strong> using the details below.</p>
@@ -380,16 +386,16 @@ function enrolledEmail({ name, course, lmsUrl, username, tempPassword, startDate
 
       ${getSignature()}
     `, BRAND.colors.success)
-  };
+    };
 }
 
 // ─────────────────────────────────────────
 // 5. NOT INTERESTED
 // ─────────────────────────────────────────
 function notInterestedEmail({ name }) {
-  return {
-    subject: `Thank You for Your Interest in ${BRAND.name}`,
-    html: wrap(`
+    return {
+        subject: `Thank You for Your Interest in ${BRAND.name}`,
+        html: wrap(`
       <p class="greeting">Dear <strong>${name}</strong>,</p>
       <p>Thank you for your interest in <strong>${BRAND.name}</strong>.</p>
       <p style="margin-top:14px;font-size:14px;color:${BRAND.colors.gray};">
@@ -415,7 +421,7 @@ function notInterestedEmail({ name }) {
 
      ${getSignature()}
     `, BRAND.colors.gray)
-  };
+    };
 }
 
 // ─────────────────────────────────────────
@@ -425,96 +431,96 @@ function notInterestedEmail({ name }) {
 // MAIN HANDLER (Modified for Dynamic Bank Settings)
 // ─────────────────────────────────────────
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST')    return res.status(405).json({ error: 'Method not allowed' });
+    if (req.method === 'OPTIONS') return res.status(200).end();
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const {
-    status, studentEmail, studentName, course,
-    price, qrCodeUrl, curriculumLink,
-    lmsUrl, username, tempPassword, startDate,
-    // Add bank details here to extract them from the request
-    bankName, bankAcNo, bankIfsc 
-  } = req.body || {};
+    const {
+        status, studentEmail, studentName, course,
+        price, qrCodeUrl, curriculumLink,
+        lmsUrl, username, tempPassword, startDate,
+        // Add bank details here to extract them from the request
+        bankName, bankAcNo, bankIfsc
+    } = req.body || {};
 
-  if (!status || !studentEmail || !studentName) {
-    return res.status(400).json({ error: 'Missing required fields: status, studentEmail, studentName' });
-  }
+    if (!status || !studentEmail || !studentName) {
+        return res.status(400).json({ error: 'Missing required fields: status, studentEmail, studentName' });
+    }
 
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    return res.status(500).json({ error: 'Email configuration error on server' });
-  }
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        return res.status(500).json({ error: 'Email configuration error on server' });
+    }
 
-  const ACTIVE_STATUSES = ['New Lead', 'Contact', 'Interested', 'Payment Pending', 'Enrolled', 'Not Interested'];
-  if (!ACTIVE_STATUSES.includes(status)) {
-    console.log(`[${BRAND.name}] Skipped email for status: ${status}`);
-    return res.status(200).json({ ok: true, skipped: true, reason: `No email configured for status: ${status}` });
-  }
+    const ACTIVE_STATUSES = ['New Lead', 'Contact', 'Interested', 'Payment Pending', 'Enrolled', 'Not Interested'];
+    if (!ACTIVE_STATUSES.includes(status)) {
+        console.log(`[${BRAND.name}] Skipped email for status: ${status}`);
+        return res.status(200).json({ ok: true, skipped: true, reason: `No email configured for status: ${status}` });
+    }
 
-  let emailContent;
-  switch (status) {
-    case 'New Lead':
-    case 'Contact':
-      emailContent = newLeadEmail({ name: studentName, course });
-      break;
+    let emailContent;
+    switch (status) {
+        case 'New Lead':
+        case 'Contact':
+            emailContent = newLeadEmail({ name: studentName, course });
+            break;
 
-    case 'Interested':
-      // Pass the dynamic bank details here
-      emailContent = interestedEmail({ 
-        name: studentName, course, price, qrCodeUrl, curriculumLink,
-        bankName: bankName || BRAND.bank.name, 
-        bankAcNo: bankAcNo || BRAND.bank.acNo, 
-        bankIfsc: bankIfsc || BRAND.bank.ifsc 
-      });
-      break;
+        case 'Interested':
+            // Pass the dynamic bank details here
+            emailContent = interestedEmail({
+                name: studentName, course, price, qrCodeUrl, curriculumLink,
+                bankName: bankName || BRAND.bank.name,
+                bankAcNo: bankAcNo || BRAND.bank.acNo,
+                bankIfsc: bankIfsc || BRAND.bank.ifsc
+            });
+            break;
 
-    case 'Payment Pending':
-      // Pass the dynamic bank details here
-      emailContent = paymentPendingEmail({ 
-        name: studentName, course, price, qrCodeUrl,
-        bankName: bankName || BRAND.bank.name, 
-        bankAcNo: bankAcNo || BRAND.bank.acNo, 
-        bankIfsc: bankIfsc || BRAND.bank.ifsc 
-      });
-      break;
+        case 'Payment Pending':
+            // Pass the dynamic bank details here
+            emailContent = paymentPendingEmail({
+                name: studentName, course, price, qrCodeUrl,
+                bankName: bankName || BRAND.bank.name,
+                bankAcNo: bankAcNo || BRAND.bank.acNo,
+                bankIfsc: bankIfsc || BRAND.bank.ifsc
+            });
+            break;
 
-    case 'Enrolled':
-      emailContent = enrolledEmail({
-        name: studentName, course, lmsUrl,
-        username: username || studentEmail,
-        tempPassword, startDate
-      });
-      break;
+        case 'Enrolled':
+            emailContent = enrolledEmail({
+                name: studentName, course, lmsUrl,
+                username: username || studentEmail,
+                tempPassword, startDate
+            });
+            break;
 
-    case 'Not Interested':
-      emailContent = notInterestedEmail({ name: studentName });
-      break;
-  }
+        case 'Not Interested':
+            emailContent = notInterestedEmail({ name: studentName });
+            break;
+    }
 
-  try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
-    });
+    try {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS
+            }
+        });
 
-    await transporter.sendMail({
-      from:    `"${BRAND.name} Learning" <${process.env.SMTP_USER}>`,
-      to:      studentEmail,
-      subject: emailContent.subject,
-      html:    emailContent.html
-    });
+        await transporter.sendMail({
+            from: `"${BRAND.name} Learning" <${process.env.SMTP_USER}>`,
+            to: studentEmail,
+            subject: emailContent.subject,
+            html: emailContent.html
+        });
 
-    console.log(`[${BRAND.name}] Email sent → ${status} → ${studentEmail}`);
-    return res.status(200).json({ ok: true, message: `Email sent for status: ${status}` });
+        console.log(`[${BRAND.name}] Email sent → ${status} → ${studentEmail}`);
+        return res.status(200).json({ ok: true, message: `Email sent for status: ${status}` });
 
-  } catch (err) {
-    console.error(`[${BRAND.name}] SMTP error:`, err);
-    return res.status(500).json({ ok: false, error: err.message });
-  }
+    } catch (err) {
+        console.error(`[${BRAND.name}] SMTP error:`, err);
+        return res.status(500).json({ ok: false, error: err.message });
+    }
 }
