@@ -145,7 +145,7 @@ const getSignature = () => `
           <div>
             <strong style="color: #334155; font-size: 13px; display: inline-block; width: 90px;">USA / Canada:</strong>
             ${BRAND.usaPhone ? `<a href="tel:${BRAND.usaPhone.replace(/\s/g, '')}" style="color: ${BRAND.colors.gray}; text-decoration: none; font-size: 13px;">${BRAND.usaPhone}</a>` : ''}
-            ${(BRAND.usaPhone && BRAND.canPhone) ? '<span style="color: #cbd5e1; margin: 0 4px;">,</span>' : ''}
+            ${(BRAND.usaPhone && BRAND.canPhone) ? '<span style="color: #cbd5e1; margin: 0;">,</span>' : ''}
             ${BRAND.canPhone ? `<a href="tel:${BRAND.canPhone.replace(/\s/g, '')}" style="color: ${BRAND.colors.gray}; text-decoration: none; font-size: 13px;">${BRAND.canPhone}</a>` : ''}
           </div>` : ''}
           
@@ -153,7 +153,7 @@ const getSignature = () => `
           <div>
             <strong style="color: #334155; font-size: 13px; display: inline-block; width: 90px;">India:</strong>
             ${BRAND.phone ? `<a href="tel:${BRAND.phone.replace(/\s/g, '')}" style="color: ${BRAND.colors.gray}; text-decoration: none; font-size: 13px;">${BRAND.phone}</a>` : ''}
-            ${(BRAND.phone && BRAND.indPhone) ? '<span style="color: #cbd5e1; margin: 0 4px;">,</span>' : ''}
+            ${(BRAND.phone && BRAND.indPhone) ? '<span style="color: #cbd5e1; margin: 0;">,</span>' : ''}
             ${BRAND.indPhone ? `<a href="tel:${BRAND.indPhone.replace(/\s/g, '')}" style="color: ${BRAND.colors.gray}; text-decoration: none; font-size: 13px;">${BRAND.indPhone}</a>` : ''}
           </div>` : ''}
         </div>
