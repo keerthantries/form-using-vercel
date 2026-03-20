@@ -137,6 +137,7 @@ const getSignature = () => `
       </div>
       
       <div style="line-height: 1.8;">
+        ${BRAND.phone ? `<div><strong style="color: ${BRAND.colors.text}; width: 60px; display: inline-block;">Phone:</strong> <a href="tel:${BRAND.phone.replace(/\s/g, '')}" style="color: ${BRAND.colors.gray}; text-decoration: none;">${BRAND.phone}</a></div>` : ''}
         ${BRAND.usaPhone ? `<div><strong style="color: ${BRAND.colors.text}; width: 60px; display: inline-block;">USA:</strong> <a href="tel:${BRAND.usaPhone.replace(/\s/g, '')}" style="color: ${BRAND.colors.gray}; text-decoration: none;">${BRAND.usaPhone}</a></div>` : ''}
         ${BRAND.canPhone ? `<div><strong style="color: ${BRAND.colors.text}; width: 60px; display: inline-block;">Canada:</strong> <a href="tel:${BRAND.canPhone.replace(/\s/g, '')}" style="color: ${BRAND.colors.gray}; text-decoration: none;">${BRAND.canPhone}</a></div>` : ''}
         ${BRAND.indPhone ? `<div><strong style="color: ${BRAND.colors.text}; width: 60px; display: inline-block;">India:</strong> <a href="tel:${BRAND.indPhone.replace(/\s/g, '')}" style="color: ${BRAND.colors.gray}; text-decoration: none;">${BRAND.indPhone}</a></div>` : ''}
