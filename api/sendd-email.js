@@ -20,22 +20,23 @@ export default async function handler(req, res) {
     if (!name || !email || !message) {
         return res.status(400).json({ error: 'Name, email, and message are required' });
     }
-// 2.5. CAPTCHA Verification
-const token = req.body.token;
-if (!token) {
-    return res.status(400).json({ error: 'Missing CAPTCHA token' });
-}
+    
+    // 2.5. CAPTCHA Verification
+    const token = req.body.token;
+    if (!token) {
+        return res.status(400).json({ error: 'Missing CAPTCHA token' });
+    }
 
-const verifyResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: `secret=${process.env.TURNSTILE_SECRET_KEY}&response=${token}`
-});
+    const verifyResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${process.env.TURNSTILE_SECRET_KEY}&response=${token}`
+    });
 
-const verification = await verifyResponse.json();
-if (!verification.success) {
-    return res.status(403).json({ error: 'CAPTCHA verification failed' });
-}
+    const verification = await verifyResponse.json();
+    if (!verification.success) {
+        return res.status(403).json({ error: 'CAPTCHA verification failed' });
+    }
  
     // Check for required environment variables
     if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !process.env.TO_EMAIL) {
@@ -93,10 +94,7 @@ if (!verification.success) {
                     font-family:'Poppins', 'Helvetica Neue', Arial, sans-serif;font-size:16px;line-height:1.7;color:#333;box-shadow: 0 6px 15px rgba(0,0,0,0.15);">
 
                         <!-- Header with Vidhyapat Branding (Dark Indigo: #5B1F9D) -->
-                        <div style="background-color:#5B1F9D; /* Dark Indigo background */
-                                    color:#ffffff; /* White text color */
-                                    text-align:center;padding:2em;">
-                            <!-- Logo Image (Using your specified URL) -->
+                        <div style="background-color:#5B1F9D; color:#ffffff; text-align:center;padding:2em;">
                             <img src="https://vidhyapat-learning.web.app/assets/images/logo/logo%20black.png" alt="Vidhyapat Logo"
                                         style="height:50px;margin-bottom:10px; border-radius: 4px; display: block; margin-left: auto; margin-right: auto;">
                             <h1 style="margin:0.3em 0 0;font-weight:700;font-size:2em; color:#ffffff;">
@@ -122,21 +120,68 @@ if (!verification.success) {
                             <p style="text-align:center;margin-top:40px;margin-bottom:40px;">
                                 <a href="https://vidhyapat.com" target="_blank"
                                     style="background:#5B1F9D;color:#fff;text-decoration:none;
-                                            padding:14px 28px;border-radius:30px;font-weight:bold;display:inline-block;border: 1px solid #5B1F9D; text-decoration: none; font-size: 1.05em;">
+                                            padding:14px 28px;border-radius:30px;font-weight:bold;display:inline-block;border: 1px solid #5B1F9D; font-size: 1.05em;">
                                     Explore Our Training
                                 </a>
                             </p>
 
-                            <hr style="margin:2em 0;border:none;height:1px;background:#ddd;">
-                            <p>Best regards,</p>
-                            <p style="font-size:1.4em;color:#5B1F9D;margin:0;font-weight:700;">The Vidhyapat Team</p>
-                            <!-- CONTACT INFO -->
-                            <p style="font-size:0.95em;color:#555;margin:0;">teamvidhyapat@gmail.com | +91 7893026644</p>
+                            <hr style="margin:2em 0; border:none; height:1px; background:#ddd;">
+                            <p style="margin: 0 0 12px 0; font-size: 15px; color: #334155;">Best regards,</p>
+                            
+                            <!-- MODERN SIGNATURE -->
+                            <div style="margin-top: 15px; font-family: 'Segoe UI', Arial, sans-serif;">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 20px;">
+                                    <tr>
+                                        <td width="56" style="padding-right: 16px; vertical-align: middle;">
+                                            <div style="background: #1a1a2e; padding: 6px; border-radius: 8px;">
+                                                <img src="https://vidhyapat-learning.web.app/assets/images/logo/logo%20black.png" alt="Vidhyapat" style="width: 44px; display: block;" />
+                                            </div>
+                                        </td>
+                                        <td style="border-left: 2px solid #5B1F9D; padding-left: 16px; vertical-align: middle;">
+                                            <strong style="display: block; font-size: 17px; color: #5B1F9D; margin: 0; letter-spacing: 0.3px;">Team Vidhyapat</strong>
+                                            <span style="display: block; font-size: 13px; color: #64748b; margin-top: 4px;">Learn. Discover. Thrive.</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <div style="font-size: 13.5px; color: #64748b;">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 20px;">
+                                        <tr>
+                                            <td>
+                                                <a href="https://vidhyapat.com" style="color: #5B1F9D; text-decoration: none; font-weight: 600; display: inline-block; margin-right: 12px; margin-bottom: 8px;">
+                                                    <span style="margin-right: 4px;">&#12716;</span> vidhyapat.com
+                                                </a>
+                                                <a href="mailto:teamvidhyapat@gmail.com" style="color: #5B1F9D; text-decoration: none; font-weight: 600; display: inline-block; margin-right: 12px; margin-bottom: 8px;">
+                                                    <span style="margin-right: 4px;">&#9993;</span> teamvidhyapat@gmail.com
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px 16px;">
+                                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                                            <div>
+                                                <strong style="color: #334155; font-size: 13px; display: inline-block; width: 90px;">USA / Canada:</strong>
+                                                <a href="tel:+12132238844" style="color: #64748b; text-decoration: none; font-size: 13px;">+1 213 223 8844</a>
+                                                <span style="color: #cbd5e1; margin: 0 4px;">,</span>
+                                                <a href="tel:+12899911346" style="color: #64748b; text-decoration: none; font-size: 13px;">+1 (289) 991-1346</a>
+                                            </div>
+                                            
+                                            <div style="margin-top: 6px;">
+                                                <strong style="color: #334155; font-size: 13px; display: inline-block; width: 90px;">India:</strong>
+                                                <a href="tel:+917893026644" style="color: #64748b; text-decoration: none; font-size: 13px;">+91 7893026644</a>
+                                                <span style="color: #cbd5e1; margin: 0 4px;">,</span>
+                                                <a href="tel:+918008919181" style="color: #64748b; text-decoration: none; font-size: 13px;">+91 8008919181</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Footer -->
                         <div style="background:#e8e8f0;text-align:center;padding:1.2em;font-size:0.85em;color:#666;">
-                            &copy; 2025 Vidhyapat. All rights reserved.
+                            &copy; ${new Date().getFullYear()} Vidhyapat. All rights reserved.
                         </div>
                     </div>
                 </div>
