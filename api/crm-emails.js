@@ -109,16 +109,38 @@ const wrap = (content, accentColor = BRAND.colors.primary) => `
 </html>`;
 const getSignature = () => `
   <div class="divider"></div>
-  <div class="signature">
-    Regards,<br/>
-    <strong>Team ${BRAND.name}</strong>
-    <div class="org" style="margin-top:6px;">
-      ${BRAND.website}<br/>
-      ${BRAND.email}<br/>
-      ${BRAND.usaPhone ? `USA: ${BRAND.usaPhone}<br/>` : ''}
-      ${BRAND.canPhone ? `Canada: ${BRAND.canPhone}<br/>` : ''}
-      ${BRAND.phone}<br/>
-      ${BRAND.indPhone ? `India: ${BRAND.indPhone}<br/>` : ''}
+  <div class="signature" style="font-family: 'Segoe UI', Arial, sans-serif;">
+    <p style="margin: 0 0 12px 0; font-size: 15px; color: ${BRAND.colors.text};">Best regards,</p>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 20px;">
+      <tr>
+        <td width="56" style="padding-right: 16px;">
+          <div style="background: #1a1a2e; padding: 6px; border-radius: 8px;">
+            <img src="${BRAND.logo}" alt="${BRAND.name}" style="width: 44px; display: block;" />
+          </div>
+        </td>
+        <td style="border-left: 2px solid ${BRAND.colors.primary}; padding-left: 16px;">
+          <strong style="display: block; font-size: 16px; color: ${BRAND.colors.primary}; margin: 0; letter-spacing: 0.3px;">Team ${BRAND.name}</strong>
+          <span style="display: block; font-size: 13px; color: ${BRAND.colors.gray}; margin-top: 4px;">${BRAND.tagline}</span>
+        </td>
+      </tr>
+    </table>
+    
+    <div style="font-size: 13px; color: ${BRAND.colors.gray};">
+      <div style="margin-bottom: 12px;">
+        <a href="${BRAND.website}" style="color: ${BRAND.colors.primary}; text-decoration: none; font-weight: 600;">
+          <i class="bi bi-globe" style="margin-right: 6px;"></i>${BRAND.website.replace('https://', '')}
+        </a>
+        <span style="color: #d1d5db; margin: 0 10px;">|</span>
+        <a href="mailto:${BRAND.email}" style="color: ${BRAND.colors.primary}; text-decoration: none; font-weight: 600;">
+          <i class="bi bi-envelope" style="margin-right: 6px;"></i>${BRAND.email}
+        </a>
+      </div>
+      
+      <div style="line-height: 1.8;">
+        ${BRAND.usaPhone ? `<div><strong style="color: ${BRAND.colors.text}; width: 60px; display: inline-block;">USA:</strong> <a href="tel:${BRAND.usaPhone.replace(/\s/g, '')}" style="color: ${BRAND.colors.gray}; text-decoration: none;">${BRAND.usaPhone}</a></div>` : ''}
+        ${BRAND.canPhone ? `<div><strong style="color: ${BRAND.colors.text}; width: 60px; display: inline-block;">Canada:</strong> <a href="tel:${BRAND.canPhone.replace(/\s/g, '')}" style="color: ${BRAND.colors.gray}; text-decoration: none;">${BRAND.canPhone}</a></div>` : ''}
+        ${BRAND.indPhone ? `<div><strong style="color: ${BRAND.colors.text}; width: 60px; display: inline-block;">India:</strong> <a href="tel:${BRAND.indPhone.replace(/\s/g, '')}" style="color: ${BRAND.colors.gray}; text-decoration: none;">${BRAND.indPhone}</a></div>` : ''}
+      </div>
     </div>
   </div>
 `;
